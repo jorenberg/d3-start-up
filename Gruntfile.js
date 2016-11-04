@@ -26,3 +26,7 @@
  * --/The Heart of Build System/-- of "d3-start-up®".
  * ____________________________________________________________________
  */
+
+// # Usage: $ node -v
+// # Usage: $ npm -v
+// # Usage: $ grunt -version
