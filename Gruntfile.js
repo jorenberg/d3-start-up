@@ -44,3 +44,76 @@ var okay  = chalk.blue;
 // ----------------------------------------------------------------------------
 // All Grunt Operations Defined...  | 05/November/2016 | Prabhat Kumar.
 // ----------------------------------------------------------------------------
+
+module.exports = function(grunt) {
+  // Project configuration.
+  grunt.initConfig({
+    /* reading 'package.json' for sync package(s) updates, mainly. */
+    pkg: grunt.file.readJSON('package.json'),
+    
+    // JavaScript --> 1.0 Hint
+    jshint: {
+      options: {
+        curly: true,
+        eqeqeq: true,
+        eqnull: true,
+        browser: true,
+        globals: {
+          d3: true,
+          Modernizr: true,
+          jQuery: true
+        },
+        strict: true,
+      },
+      ignore_warning: {
+        options: {
+          '-W015': true // [L24:C9] W015: Expected '}' to have an indentation at 11 instead at 9.
+        }
+      },
+      all: [
+        './Gruntfile.js',
+        './core/source/script/d3.nifty.js',
+        './core/source/script/d3.startup.js',
+        '!node_modules/**/*.js' // ignores node_modules.
+      ]
+    },
+    // JavaScript --> 1.1 Minify
+    uglify: {
+      options: {
+        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - author: <%= pkg.author %> - ' + '<%= grunt.template.today("yyyy-mm-dd") %> */'
+      },
+      my_target: {
+        options: {
+          sourceMap: false,
+        },
+        files: {
+          'build/script/d3.nifty.min.js': ['./core/source/script/d3.nifty.js'],
+          'build/script/d3.startup.min.js': ['./core/source/script/d3.startup.js']
+        }
+      }
+    }
+  });
+  var msg =
+      '-------------------------------------------\n' +
+      ' SEED™: Umeå\n' +
+      ' A Sequømics Product, http://sequomics.com/\n' +
+      '-------------------------------------------';
+  var today = new Date();
+  
+  grunt.log.writeln(yeep(msg));
+  grunt.log.writeln(okay(today));
+  
+  // These plugins provide necessary tasks.
+  // --------------------------------------
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  
+  // "Grunt" runs these tasks.
+  // -------------------------
+  grunt.registerTask('test', ['jshint']);
+  grunt.registerTask('build', ['jshint', 'uglify']);
+  
+  // Default task.
+  // -------------
+  grunt.registerTask('default', ['test']);
+};
