@@ -32,3 +32,6 @@
 // # Usage: $ grunt -version
 
 "use strict";
+
+// Load required NPM module.
+var chalk = require('chalk');
